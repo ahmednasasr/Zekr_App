@@ -26,8 +26,6 @@
 		<true/>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
-		<key>UIMainStoryboardFile</key>
-		<string>Main</string>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
@@ -50,14 +48,12 @@
 		<string>يتم استخدام الموقع لعرض اتجاه القبلة ومواقيت الصلاة.</string>
 		<key>NSLocationAlwaysUsageDescription</key>
 		<string>يتم استخدام الموقع لعرض اتجاه القبلة ومواقيت الصلاة.</string>
-		<!-- إذن الصوت في الخلفية -->
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>يتم استخدام الموقع لعرض اتجاه القبلة ومواقيت الصلاة.</string>
+		<!-- أوضاع الخلفية -->
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>audio</string>
-		</array>
-		<!-- إذن استخدام البيانات في الخلفية (Background Fetch) -->
-		<key>UIBackgroundModes</key>
-		<array>
 			<string>fetch</string>
 			<string>remote-notification</string>
 		</array>

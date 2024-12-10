@@ -23,11 +23,18 @@ class _HomeScreenState extends State<HomeScreen>
   String? selectedDhikr;
   final List<String> adhkar = [
     "سبحان الله",
-    "سبحان الله العظيم",
     "لا إله إلا الله",
-    "الله أكبر",
     "الحمد لله",
-    "عشوائي", // إضافة خيار عشوائي
+    "اللهم صلي علي نبينا محمد",
+    "استغفر الله واتوب اليه",
+    "حسبنا الله ونعم الوكيل",
+    "لا حول ولا قوه الا بالله العلي العظيم",
+    "لا اله الا الله وحده لا شريك له",
+    "لا اله الا انت سبحانك",
+    "صلي علي محمد",
+    "سبحان الله وبحمده",
+    "سبحان الله وبحمده سبحان الله العظيم",
+    "عشوائي",
     "مخصص"
   ];
 
@@ -73,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
+
   void showBatteryOptimizationDialog() {
     showDialog(
       context: context,
@@ -98,6 +106,8 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -227,10 +237,14 @@ class _HomeScreenState extends State<HomeScreen>
                     items: adhkar.map((String dhikr) {
                       return DropdownMenuItem<String>(
                         value: dhikr,
-                        child: Text(
-                          dhikr,
-                          style: TextStyle(
-                              fontFamily: "messiri", color: Colors.white),
+                        child: SizedBox(
+                          width: 200.w,
+                          child: Text(
+                            dhikr,
+                            style: TextStyle(fontFamily: "messiri", color: Colors.white),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
                         ),
                       );
                     }).toList(),

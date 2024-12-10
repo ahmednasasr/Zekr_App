@@ -25,6 +25,10 @@ dependencies:
   flutter_screenutil: ^5.9.3
   wakelock_plus: ^1.2.8
   flutter_native_splash: ^2.4.3
+  flutter_launcher_icons:
+  video_player: ^2.9.2
+  youtube_player_flutter: ^9.1.1
+
 
 dev_dependencies:
   flutter_test:
@@ -32,12 +36,21 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 flutter_native_splash:
-  color: "#42a5f5" # اللون الخلفي للشاشة
-  image: assets/images/icon_splash.png # مسار صورة الشاشة
+  color: "#002B25" # اللون الخلفي للشاشة
+  image: "assets/images/icon.png"
   android: true # تمكين الدعم لنظام أندرويد
   ios: true # تمكين الدعم لنظام iOS
-  web: false # تعطيل الدعم للويب (يمكن تغييره إذا لزم الأمر)
   android_12:
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "assets/images/icon.png"
+  adaptive_icon_foreground: "assets/images/icon.png"
+  image_path_ios: "assets/images/icon.png"  # استخدام نفس الأيقونة للـ iOS
+
 
 flutter:
   uses-material-design: true
@@ -46,6 +59,15 @@ flutter:
     - assets/sound/subhan_allah.mp3
     - assets/sound/la_ilah_illa_allah.mp3
     - assets/sound/alhamdulillah.mp3
+    - assets/sound/allahumma_salli_ala_nabiyina.mp3
+    - assets/sound/astaghfirullah_wa_atubu.mp3
+    - assets/sound/hasbuna_allah_wa_ni3ma.mp3
+    - assets/sound/la_hawla_wala_quwata_elali_elazem.mp3
+    - assets/sound/la_ilaha_illa_allah_wahdh_la.mp3
+    - assets/sound/la_ilaha_illa_anta.mp3
+    - assets/sound/salat_ala_mohammad.mp3
+    - assets/sound/subhan_alaah_wbhmd_sobhan_alaah.mp3
+    - assets/sound/subhan_allah_wa_bihamdih.mp3
 
   fonts:
     - family: messiri

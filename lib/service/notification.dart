@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
-import 'package:wakelock_plus/wakelock_plus.dart'; // تأكد من استيراد الحزمة
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class NotificationService {
   static final NotificationService instance = NotificationService._internal();
@@ -102,10 +102,17 @@ class NotificationService {
 
     final List<String> dhikrs = [
       "سبحان الله",
-      "سبحان الله العظيم",
       "لا إله إلا الله",
-      "الله أكبر",
       "الحمد لله",
+      "اللهم صلي علي نبينا محمد",
+      "استغفر الله واتوب اليه",
+      "حسبنا الله ونعم الوكيل",
+      "لا حول ولا قوه الا بالله العلي العظيم",
+      "لا اله الا الله وحده لا شريك له",
+      "لا اله الا انت سبحانك",
+      "صلي علي محمد",
+      "سبحان الله وبحمده",
+      "سبحان الله وبحمده سبحان الله العظيم",
     ];
 
     final AndroidNotificationDetails androidDetails =
@@ -188,6 +195,9 @@ class NotificationService {
       playSound: false,
       enableVibration: true,
       visibility: NotificationVisibility.secret, // إخفاء الإشعار عن المستخدم
+      color: Color(0xFFFFFFFF), // خلفية بيضاء
+      colorized: true, // تفعيل تلوين الإشعار
+
     );
 
     final NotificationDetails notificationDetails =
@@ -231,38 +241,47 @@ class NotificationService {
 
   Future<void> _playAudio(String dhikr) async {
     // إعادة تعيين audioPath في كل مرة
-    audioPath = '';
+    String audioPath = '';
 
     switch (dhikr) {
       case "سبحان الله":
         audioPath = 'sound/subhan_allah.mp3';
         break;
-      case "سبحان الله العظيم":
-        audioPath = 'sound/subhan_allah_aleem.mp3';
-        break;
-      case "لا إله إلا الله وحده لا شريك له له الملك وله الحمد وهو علي كل شي قدير":
-        audioPath = 'sound/la_ilah_illa_allah_wahdah.mp3';
-        break;
-      case "الله أكبر":
-        audioPath = 'sound/allah_akbar.mp3';
+      case "لا إله إلا الله":
+        audioPath = 'sound/la_ilah_illa_allah.mp3';
         break;
       case "الحمد لله":
         audioPath = 'sound/alhamdulillah.mp3';
         break;
-      case "لا اله الا انت سبحانك اني كنت من الظالمين":
-        audioPath = 'sound/la_ilah_illa_anta_subhanaka.mp3';
+      case "اللهم صلي علي نبينا محمد":
+        audioPath = 'sound/allahumma_salli_ala_nabiyina.mp3';
+        break;
+      case "استغفر الله واتوب اليه":
+        audioPath = 'sound/astaghfirullah_wa_atubu.mp3';
+        break;
+      case "حسبنا الله ونعم الوكيل":
+        audioPath = 'sound/hasbuna_allah_wa_ni3ma.mp3';
+        break;
+      case "لا حول ولا قوه الا بالله العلي العظيم":
+        audioPath = 'sound/la_hawla_wala_quwata_elali_elazem.mp3';
+        break;
+      case "لا اله الا الله وحده لا شريك له":
+        audioPath = 'sound/la_ilaha_illa_allah_wahdh_la.mp3';
+        break;
+      case "لا اله الا انت سبحانك":
+        audioPath = 'sound/la_ilaha_illa_anta.mp3';
         break;
       case "صلي علي محمد":
-        audioPath = 'sound/sallu_ala_mohammad.mp3';
+        audioPath = 'sound/salat_ala_mohammad.mp3';
         break;
-      case "تباركت يا ذا الجلال والإكرام":
-        audioPath = 'sound/tabarakt_ya_dha_aljalal.mp3';
+      case "سبحان الله وبحمده":
+        audioPath = 'sound/subhan_allah_wa_bihamdih.mp3';
         break;
-      case "سبحانك اللهم وبحمدك":
-        audioPath = 'sound/subhanaka_allahuma.mp3';
+      case "سبحان الله وبحمده سبحان الله العظيم":
+        audioPath = 'sound/subhan_alaah_wbhmd_sobhan_alaah.mp3';
         break;
       default:
-        print("Unknown : $dhikr");
+        print("Unknown dhikr: $dhikr");
         return; // توقف العملية
     }
 
