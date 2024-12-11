@@ -394,7 +394,6 @@ class NotificationService {
             intervalInSeconds: selectedTime!,
             id: 999, // يمكن استخدام معرّف ثابت أو حسابي
           );
-          print("هنا هنا القوه");
         } else if (selectedDhikr == "مخصص") {
           // إذا كان الذكر مخصص، نرسل الأذكار من القائمة المخصصة واحدة تلو الأخرى
           List<String> customAzkar = await NotificationService.instance

@@ -48,7 +48,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // تحميل الأذكار المحفوظة سابقًا
     final prefs = await SharedPreferences.getInstance();
     final savedAzkar = prefs.getStringList('customAzkar') ?? [];
-    List<String> selectedAzkar = List<String>.from(savedAzkar); // نسخ الأذكار المحفوظة
+    List<String> selectedAzkar =
+        List<String>.from(savedAzkar); // نسخ الأذكار المحفوظة
 
     return showDialog(
       context: context,
@@ -65,9 +66,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onTap: () {
                         setDialogState(() {
                           if (isSelected) {
-                            selectedAzkar.remove(azkar); // إزالة إذا تم الاختيار مسبقًا
+                            selectedAzkar
+                                .remove(azkar); // إزالة إذا تم الاختيار مسبقًا
                           } else {
-                            selectedAzkar.add(azkar); // إضافة إذا لم يكن موجودًا
+                            selectedAzkar
+                                .add(azkar); // إضافة إذا لم يكن موجودًا
                           }
                         });
                       },
@@ -94,7 +97,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           ),
                           trailing: isSelected
-                              ? const Icon(Icons.check, color: Color(0xffFFD700))
+                              ? const Icon(Icons.check,
+                                  color: Color(0xffFFD700))
                               : null,
                         ),
                       ),
@@ -125,26 +129,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _handleSleepMode(bool isEnabled) {
-    final now = DateTime.now();
-    final nightTime = DateTime(now.year, now.month, now.day, 22);
-    final morningTime = DateTime(now.year, now.month, now.day + 1, 6);
-
+  void _handleSleepMode(bool isEnabled) async {
     if (isEnabled) {
+      final now = DateTime.now();
+      final nightTime = DateTime(now.year, now.month, now.day, 22);
+      final morningTime = DateTime(now.year, now.month, now.day + 1, 6);
+
       if (now.isBefore(nightTime)) {
         final durationUntilNight = nightTime.difference(now);
         Future.delayed(durationUntilNight, () {
           NotificationService.instance.handleSleepMode(true);
         });
-      } else {
+      } else if (now.isBefore(morningTime)) {
         NotificationService.instance.handleSleepMode(true);
-      }
-
-      Future.delayed(morningTime.difference(now), () {
+        final durationUntilMorning = morningTime.difference(now);
+        Future.delayed(durationUntilMorning, () {
+          NotificationService.instance.handleSleepMode(false);
+        });
+      } else {
         NotificationService.instance.handleSleepMode(false);
-      });
-    } else {
-      NotificationService.instance.handleSleepMode(false);
+      }
     }
   }
 
@@ -215,14 +219,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         SizedBox(height: 20.h),
                         _buildVolumeControl(),
                         SizedBox(height: 20.h),
-                        _buildSilentModeSwitch(),
-                        SizedBox(height: 20.h),
                         _buildCustomModeSwitch(),
                         SizedBox(height: 20.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "إيقاف التذكير وقت النوم",
@@ -250,16 +253,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                               ],
                             ),
-                            Switch(
-                              value: AppSettings.isSleepModeEnabled,
-                              activeColor: const Color(0xffFFD700),
-                              onChanged: (value) {
-                                setState(() {
-                                  AppSettings.isSleepModeEnabled = value;
-                                  _saveSettings('isSleepModeEnabled', value);
-                                  _handleSleepMode(value);
-                                });
-                              },
+                            Row(
+                              children: [
+                                Switch(
+                                  value: AppSettings.isSleepModeEnabled,
+                                  activeColor: const Color(0xffFFD700),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      AppSettings.isSleepModeEnabled = value;
+                                      _saveSettings(
+                                          'isSleepModeEnabled', value);
+                                      _handleSleepMode(value);
+                                    });
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.help_outline,
+                                    color:
+                                        Color(0xffFFD700), // لون الأيقونة ذهبي
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor: const Color(
+                                              0xff004D40), // أخضر غامق
+                                          title: const Text(
+                                            "إرشادات الاستخدام",
+                                            style: TextStyle(
+                                              fontFamily: "messiri",
+                                              color: Color(0xffFFD700), // ذهبي
+                                            ),
+                                          ),
+                                          content: const Text(
+                                            "يرجى تفعيل وضع النوم عند الحاجة إليه. يتم إيقاف الإشعارات تلقائيًا من الساعة 10:00 مساءً حتى الساعة 6:00 صباحًا. يجب تفعيله كل مرة تحتاج إليه حسب رغبتك.",
+                                            style: TextStyle(
+                                              fontFamily: "messiri",
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text(
+                                                "حسنًا",
+                                                style: TextStyle(
+                                                  fontFamily: "messiri",
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -297,11 +351,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   backgroundColor: const Color(0xFF004D40), // أخضر غامق كخلفية
                   title: const Text(
                     "عذرًا",
-                    style: TextStyle(fontFamily: "messiri",color: Color(0xFFFFD700)),
+                    style: TextStyle(
+                        fontFamily: "messiri", color: Color(0xFFFFD700)),
                   ),
                   content: const Text(
                     "اللغة الإنجليزية غير متوفرة حاليًا.",
-                    style: TextStyle(fontFamily: "messiri",color: Color(0xFFFFD700)),
+                    style: TextStyle(
+                        fontFamily: "messiri", color: Color(0xFFFFD700)),
                   ),
                   actions: [
                     TextButton(
@@ -310,7 +366,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       },
                       child: const Text(
                         "حسنًا",
-                        style: TextStyle(fontFamily: "messiri",color: Colors.white),
+                        style: TextStyle(
+                            fontFamily: "messiri", color: Colors.white),
                       ),
                     ),
                   ],
@@ -360,31 +417,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildSilentModeSwitch() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          "تشغيل في الوضع الصامت",
-          style: TextStyle(
-            color: Color(0xffFFD700),
-            fontSize: 16.sp,
-            fontFamily: "messiri",
-          ),
-        ),
-        Switch(
-          value: AppSettings.isSilentModeEnabled,
-          activeColor: const Color(0xffFFD700),
-          onChanged: (value) {
-            setState(() {
-              AppSettings.isSilentModeEnabled = value;
-              _saveSettings('isSilentModeEnabled', value);
-            });
-          },
-        ),
-      ],
-    );
-  }
 
   Widget _buildCustomModeSwitch() {
     return Row(
@@ -408,7 +440,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               if (value) {
                 _showCustomModeDialog();
               } else {
-                AppSettings.clearCustomAzkar(); // مسح الأذكار عند إيقاف الوضع المخصص
+                AppSettings
+                    .clearCustomAzkar(); // مسح الأذكار عند إيقاف الوضع المخصص
               }
             });
           },
