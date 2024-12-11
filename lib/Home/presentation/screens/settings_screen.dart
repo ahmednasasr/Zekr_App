@@ -131,26 +131,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _handleSleepMode(bool isEnabled) {
     final now = DateTime.now();
-    final nightTime = DateTime(now.year, now.month, now.day, 22);
-    final morningTime = DateTime(now.year, now.month, now.day + 1, 6);
+    final nightTime = DateTime(now.year, now.month, now.day, 22); // 10:00 مساءً
+    final morningTime = DateTime(now.year, now.month, now.day + 1, 6); // 6:00 صباحًا
 
     if (isEnabled) {
-      if (now.isBefore(nightTime)) {
+      if (now.isAfter(nightTime) || now.isBefore(morningTime)) {
+        // إذا كان الوقت بين 10:00 مساءً و6:00 صباحًا
+        NotificationService.instance.handleSleepMode(true);
+      } else if (now.isBefore(nightTime)) {
+        // إذا كان الوقت قبل 10:00 مساءً، جدولة التفعيل عند الساعة 10:00 مساءً
         final durationUntilNight = nightTime.difference(now);
         Future.delayed(durationUntilNight, () {
           NotificationService.instance.handleSleepMode(true);
         });
-      } else {
-        NotificationService.instance.handleSleepMode(true);
       }
 
-      Future.delayed(morningTime.difference(now), () {
+      // جدولة الإيقاف عند الساعة 6:00 صباحًا
+      final durationUntilMorning = morningTime.difference(now);
+      Future.delayed(durationUntilMorning, () {
         NotificationService.instance.handleSleepMode(false);
       });
     } else {
+      // إذا تم تعطيل وضع النوم، إيقاف وضع النوم فورًا
       NotificationService.instance.handleSleepMode(false);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
