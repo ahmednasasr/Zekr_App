@@ -129,26 +129,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _handleSleepMode(bool isEnabled) async {
-    if (isEnabled) {
-      final now = DateTime.now();
-      final nightTime = DateTime(now.year, now.month, now.day, 22);
-      final morningTime = DateTime(now.year, now.month, now.day + 1, 6);
+  void _handleSleepMode(bool isEnabled) {
+    final now = DateTime.now();
+    final nightTime = DateTime(now.year, now.month, now.day, 22);
+    final morningTime = DateTime(now.year, now.month, now.day + 1, 6);
 
+    if (isEnabled) {
       if (now.isBefore(nightTime)) {
         final durationUntilNight = nightTime.difference(now);
         Future.delayed(durationUntilNight, () {
           NotificationService.instance.handleSleepMode(true);
         });
-      } else if (now.isBefore(morningTime)) {
-        NotificationService.instance.handleSleepMode(true);
-        final durationUntilMorning = morningTime.difference(now);
-        Future.delayed(durationUntilMorning, () {
-          NotificationService.instance.handleSleepMode(false);
-        });
       } else {
-        NotificationService.instance.handleSleepMode(false);
+        NotificationService.instance.handleSleepMode(true);
       }
+
+      Future.delayed(morningTime.difference(now), () {
+        NotificationService.instance.handleSleepMode(false);
+      });
+    } else {
+      NotificationService.instance.handleSleepMode(false);
     }
   }
 
