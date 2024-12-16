@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:islamic_app_saudi/service/notification.dart';
@@ -35,18 +37,19 @@ void main() async {
 }
 
 Future<void> enableBackgroundMode() async {
-  const androidConfig = FlutterBackgroundAndroidConfig(
-    enableWifiLock: true,
-    notificationImportance: AndroidNotificationImportance.max,
-    shouldRequestBatteryOptimizationsOff: true,
-  );
-  // تهيئة FlutterBackground
-  bool success = await FlutterBackground.initialize(androidConfig: androidConfig);
-  if (success) {
-    await FlutterBackground.enableBackgroundExecution();
-    print("تم تفعيل وضع الخلفية.");
-  } else {
-    print("فشل تفعيل وضع الخلفية.");
+  if (Platform.isAndroid) {
+    const androidConfig = FlutterBackgroundAndroidConfig(
+      enableWifiLock: true,
+      notificationImportance: AndroidNotificationImportance.max,
+      shouldRequestBatteryOptimizationsOff: true,
+    );
+    bool success = await FlutterBackground.initialize(androidConfig: androidConfig);
+    if (success) {
+      await FlutterBackground.enableBackgroundExecution();
+      print("تم تفعيل وضع الخلفية.");
+    } else {
+      print("فشل تفعيل وضع الخلفية.");
+    }
   }
 }
 
