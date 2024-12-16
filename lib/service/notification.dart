@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -294,13 +295,21 @@ class NotificationService {
   }
 
   Future<void> startBackgroundTask() async {
-    await FlutterBackground.initialize();
-    bool hasPermissions = await FlutterBackground.hasPermissions;
-    if (!hasPermissions) {
-      print("أذونات الخلفية غير ممنوحة");
-    }
+    if (Platform.isAndroid) {
+      // تهيئة FlutterBackground فقط إذا كان النظام هو Android
+      await FlutterBackground.initialize();
 
-    await FlutterBackground.enableBackgroundExecution();
+      bool hasPermissions = await FlutterBackground.hasPermissions;
+      if (!hasPermissions) {
+        print("أذونات الخلفية غير ممنوحة");
+      }
+
+      // تمكين الخلفية فقط على Android
+      await FlutterBackground.enableBackgroundExecution();
+      print("تم تفعيل الخلفية.");
+    } else {
+      print("الخدمة الخلفية غير مدعومة على هذا النظام.");
+    }
   }
 
   Future<void> refreshNotfication() async {
