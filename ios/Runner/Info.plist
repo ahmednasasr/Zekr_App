@@ -5,7 +5,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Islamic App Saudi</string>
+		<string>Zekr</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>islamic_app_saudi</string>
+		<string>zekr</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -46,8 +46,6 @@
 		<!-- أذونات الموقع -->
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>يتم استخدام الموقع لعرض اتجاه القبلة ومواقيت الصلاة.</string>
-		<key>NSLocationAlwaysUsageDescription</key>
-		<string>يتم استخدام الموقع لعرض اتجاه القبلة ومواقيت الصلاة.</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>يتم استخدام الموقع لعرض اتجاه القبلة ومواقيت الصلاة.</string>
 		<!-- أوضاع الخلفية -->
@@ -57,6 +55,15 @@
 			<string>fetch</string>
 			<string>remote-notification</string>
 		</array>
+		<!-- إشعارات -->
+		<key>NSCalendarsUsageDescription</key>
+		<string>التطبيق يحتاج للوصول إلى التقويم لإدارة الإشعارات.</string>
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+		</dict>
+		<!-- إعدادات عامة -->
 		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>
