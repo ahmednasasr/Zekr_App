@@ -443,6 +443,8 @@ class NotificationService {
     List<String> customAzkar = prefs.getStringList('customAzkar') ?? [];
     return customAzkar;
   }
+
+  // fun توقيف الاشعارات قبل الاذان ب 10 دقائق وفتحها بعده ب 10 دقائق
 // Future<void> handlePrayerNotifications(PrayerTimes prayerTimes) async {
 //   final now = DateTime.now();
 //   final prayerTimesList = [

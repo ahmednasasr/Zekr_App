@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen>
   bool isOn = false;
   int? selectedTime;
   final List<int> times = List.generate(240,
-          (index) => (index + 1) * 60); // 240 تعني 4 ساعات (240 * 60 = 14400 ثانية)
+      (index) => (index + 1) * 60); // 240 تعني 4 ساعات (240 * 60 = 14400 ثانية)
   late AnimationController _controller;
 
   @override
@@ -65,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen>
       selectedTime = null;
     });
   }
+
   Future<void> checkBatteryOptimization() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstRun = prefs.getBool('isFirstRun') ?? true;
@@ -79,7 +80,6 @@ class _HomeScreenState extends State<HomeScreen>
       }
     }
   }
-
 
   void showBatteryOptimizationDialog() {
     showDialog(
@@ -107,7 +107,33 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-
+  void showGuidanceDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          'إرشادات',
+          style: TextStyle(color: Color(0xffFFD700)),
+        ),
+        backgroundColor: const Color(0xff004D40),
+        content: const Text(
+          'التطبيق لا يعمل عند إزالته من الخلفية. عندما تريد تشغيله يمكنك فتحه وتركه في الخلفية.',
+          style: TextStyle(fontFamily: "messiri", color: Colors.white),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text(
+              'حسناً',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +235,8 @@ class _HomeScreenState extends State<HomeScreen>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0.h), // استخدام ScreenUtil هنا
+                  padding: EdgeInsets.symmetric(
+                      vertical: 16.0.h), // استخدام ScreenUtil هنا
                   child: Center(
                     child: Text(
                       "هَٰذَا ذِكْرُ مَن مَّعِيَ وَذِكْرُ مَن قَبْلِي",
@@ -228,8 +255,11 @@ class _HomeScreenState extends State<HomeScreen>
                   padding: EdgeInsets.all(16.w), // استخدام ScreenUtil هنا
                   decoration: BoxDecoration(
                     color: const Color(0xff004D40),
-                    borderRadius: BorderRadius.circular(16.r), // استخدام ScreenUtil هنا
-                    border: Border.all(color: const Color(0xffFFD700), width: 4.w), // استخدام ScreenUtil هنا
+                    borderRadius:
+                        BorderRadius.circular(16.r), // استخدام ScreenUtil هنا
+                    border: Border.all(
+                        color: const Color(0xffFFD700),
+                        width: 4.w), // استخدام ScreenUtil هنا
                   ),
                   child: DropdownButton<String>(
                     value: selectedDhikr,
@@ -241,7 +271,8 @@ class _HomeScreenState extends State<HomeScreen>
                           width: 200.w,
                           child: Text(
                             dhikr,
-                            style: TextStyle(fontFamily: "messiri", color: Colors.white),
+                            style: TextStyle(
+                                fontFamily: "messiri", color: Colors.white),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
@@ -274,7 +305,7 @@ class _HomeScreenState extends State<HomeScreen>
                       showTimeSelectionDialog(
                         context,
                         times,
-                            (selected) async {
+                        (selected) async {
                           setState(() {
                             selectedTime = selected;
                           });
@@ -289,7 +320,9 @@ class _HomeScreenState extends State<HomeScreen>
                                 id: 999,
                               );
                             } else if (selectedDhikr == "مخصص") {
-                              List<String> customAzkar = await NotificationService.instance.loadCustomAzkar();
+                              List<String> customAzkar =
+                                  await NotificationService.instance
+                                      .loadCustomAzkar();
                               if (customAzkar.isEmpty) {
                                 isOn = false;
                                 selectedDhikr = null;
@@ -303,11 +336,14 @@ class _HomeScreenState extends State<HomeScreen>
                                   ),
                                 );
                               } else {
-                                NotificationService.instance.toggleNotifications(true);
+                                NotificationService.instance
+                                    .toggleNotifications(true);
 
                                 for (int i = 0; i < customAzkar.length; i++) {
-                                  Future.delayed(Duration(seconds: selectedTime! * i), () {
-                                    NotificationService.instance.startPeriodicNotifications(
+                                  Future.delayed(
+                                      Duration(seconds: selectedTime! * i), () {
+                                    NotificationService.instance
+                                        .startPeriodicNotifications(
                                       dhikr: customAzkar[i],
                                       intervalInSeconds: selectedTime!,
                                       id: i,
@@ -318,8 +354,10 @@ class _HomeScreenState extends State<HomeScreen>
                               }
                             } else {
                               int index = adhkar.indexOf(selectedDhikr!);
-                              NotificationService.instance.toggleNotifications(true);
-                              NotificationService.instance.startPeriodicNotifications(
+                              NotificationService.instance
+                                  .toggleNotifications(true);
+                              NotificationService.instance
+                                  .startPeriodicNotifications(
                                 dhikr: selectedDhikr!,
                                 intervalInSeconds: selectedTime!,
                                 id: index,
@@ -385,6 +423,14 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   );
                 },
+              ),
+            ),
+            Positioned(
+              top: 30.h,
+              right: 10.w,
+              child: IconButton(
+                icon: const Icon(Icons.help_outline, color: Color(0xffFFD700)),
+                onPressed: showGuidanceDialog,
               ),
             ),
           ],
